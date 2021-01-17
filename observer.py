@@ -1,5 +1,7 @@
 class Produto:
 
+    __slots__ = ["_clientes", "_nome", "_preco"]
+
     def __init__(self, nome, preco):
         self._clientes = []
         self._nome = nome
@@ -25,7 +27,7 @@ class Produto:
     def preco(self, preco):
         valor = self._preco
         self._preco = preco
-        self.notify(f"O seu produto está no preço que você queria\n{valor:.2f} --> {preco:.2f}")
+        self.notify(f"O seu produto está abaixo do preço que você queria\n{valor:.2f} --> {preco:.2f}")
     
 
     def subscribe(self, cliente):
@@ -48,11 +50,12 @@ class Produto:
         for cliente in self._clientes:
             if self._preco <= cliente.preco:
                 cliente.update(msg)
-                print()
 
 
 class Cliente:
     
+    __slots__ = ["_nome", "_preco"]
+
     def __init__(self, nome, preco):
         self._nome = nome
         self._preco = preco
@@ -82,14 +85,17 @@ class Cliente:
         print(f"Olá {self._nome}\nTemos uma notificação para você")
         print('-' * 40)
         print(msg)
+        print(f"Preço desejado: {self._preco:.2f}\n\n")
 
-
-c1 = Cliente("daniel", 2.5)
-c2 = Cliente("marcos", 2)
 
 p = Produto("Manteiga", 3)
+
+c1 = Cliente("daniel", 2)
+c2 = Cliente("marcos", 2.50)
+c3 = Cliente("ana", 3)
+
 p.subscribe(c1)
 p.subscribe(c2)
+p.subscribe(c3)
 
-p.nome = "Margarina"
-p.preco = 4
+p.preco = 2.40
