@@ -48,17 +48,17 @@ class Produto:
 
     def notify(self, msg):
         for cliente in self._clientes:
-            if self._preco <= cliente.preco:
+            if self._preco <= cliente.precoDesejado:
                 cliente.update(msg)
 
 
 class Cliente:
     
-    __slots__ = ["_nome", "_preco"]
+    __slots__ = ["_nome", "_precoDesejado"]
 
     def __init__(self, nome, preco):
         self._nome = nome
-        self._preco = preco
+        self._precoDesejado = preco
 
 
     @property
@@ -72,20 +72,20 @@ class Cliente:
 
 
     @property
-    def preco(self):
-        return self._preco
+    def precoDesejado(self):
+        return self._precoDesejado
 
 
-    @preco.setter
-    def preco(self, preco):
-        self.preco = preco
+    @precoDesejado.setter
+    def precoDesejado(self, preco):
+        self._precoDesejado = preco
 
 
     def update(self, msg):
         print(f"Olá {self._nome}\nTemos uma notificação para você")
         print('-' * 40)
         print(msg)
-        print(f"Preço desejado: {self._preco:.2f}\n\n")
+        print(f"Preço desejado: {self._precoDesejado:.2f}\n\n")
 
 
 p = Produto("Manteiga", 3)
