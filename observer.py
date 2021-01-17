@@ -1,49 +1,82 @@
-class Observable:
+class Produto:
 
-    def __init__(self):
-        self._observers = []
+    def __init__(self, nome, preco):
+        self._clientes = []
+        self._nome = nome
+        self._preco = preco
 
 
-    def subscribe(self, observer):
-        if observer not in self._observers:
-            self._observers.append(observer)    
+    @property
+    def nome(self):
+        return self._nome
+    
+
+    @nome.setter
+    def nome(self, nome):
+        self.notify(f"Nosso produto mudou de nome\n{self._nome} --> {nome}")
+        self._nome = nome
+
+
+    @property
+    def preco(self):
+        return self._preco
+    
+
+    @preco.setter
+    def preco(self, preco):
+        self.notify(f"Nosso produto está com um novo preço\n{self._preco:.2f} --> {preco:.2f}")
+        self._preco = preco
+    
+
+    def subscribe(self, cliente):
+        if cliente not in self._clientes:
+            self._clientes.append(cliente)    
 
             return True
         return False
 
     
-    def unsubscribe(self, observer):
-        if observer in self._observers:
-            self._observers.remove(observer)    
+    def unsubscribe(self, cliente):
+        if cliente in self._clientes:
+            self._clientes.remove(cliente)    
 
             return True
         return False
 
 
     def notify(self, msg):
-        for observer in self._observers:
-            observer.update(f"{msg}")
-                
+        for cliente in self._clientes:
+            cliente.update(msg)
+            print()
 
 
-class Observer:
+class Cliente:
     
     def __init__(self, nome):
         self._nome = nome
 
 
+    @property
+    def nome(self):
+        return self._nome
+
+
+    @nome.setter
+    def nome(self, nome):
+        self.nome = nome
+
+
     def update(self, msg):
-        print(f"{msg}")
+        print(f"Olá {self._nome}\nTemos uma notificação para você")
+        print('-' * 40)
+        print(msg)
 
 
-cliente1 = Observer()
-cliente2 = Observer()
-cliente3 = Observer()
+c1 = Cliente("daniel")
+c2 = Cliente("marcos")
 
-produto = Observable()
+p = Produto("Manteiga", 3)
+p.subscribe(c1)
+p.subscribe(c2)
 
-produto.subscribe(cliente1)
-produto.subscribe(cliente2)
-produto.subscribe(cliente3)
-
-produto.notify("Hello, World!!")
+p.nome = "Margarina"
